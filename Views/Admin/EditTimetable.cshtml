@@ -1,0 +1,57 @@
+﻿@using Campus360.ViewModels
+@model EditTimetableViewModel
+
+@{
+    ViewData["Title"] = "Edit Timetable";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3>Edit Timetable</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="EditTimetable" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="CourseAssignmentId" class="form-label"></label>
+                <select asp-for="CourseAssignmentId" asp-items="Model.CourseAssignments" class="form-select">
+                    <option value="">-- Select Assignment --</option>
+                </select>
+                <span asp-validation-for="CourseAssignmentId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DayOfWeek" class="form-label"></label>
+                <select asp-for="DayOfWeek" asp-items="Model.DaysOfWeek" class="form-select">
+                    <option value="">-- Select Day --</option>
+                </select>
+                <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="StartTime" class="form-label"></label>
+                    <input asp-for="StartTime" class="form-control" type="time" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="EndTime" class="form-label"></label>
+                    <input asp-for="EndTime" class="form-control" type="time" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button asp-action="EditTimetable" Method="post" type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="AllTimetables" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

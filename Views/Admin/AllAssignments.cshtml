@@ -1,0 +1,44 @@
+﻿@using Campus360.Models
+@model List<CourseAssignment>
+
+@{
+    ViewData["Title"] = "All Assignments";
+    int? teacherId = ViewBag.id;
+}
+
+<h2>All Assignments</h2>
+<link rel="stylesheet" href="~/css/Master.css" />
+
+@if (Model != null && Model.Any())
+{
+    <ul class="assignment-list">
+        @foreach (var assignment in Model)
+        {
+            <li class="assignment-item">
+                <div class="assignment-content">
+                    <div class="assignment-text">
+                        <div class="assignment-title">@assignment.Course.Name</div>
+                        <div class="assignment-room">Room: @assignment.Class.Id Semester: @assignment.Course.Semester</div>
+                    </div>
+                    <div class="remove-button-container">
+                        <form asp-controller="Admin" asp-action="RemoveAssignment" asp-route-id="@assignment.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-remove">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No assignments found.</p>
+}
+
+@if (teacherId.HasValue)
+{
+    <div class="assignments-header">
+        <a class="btn-assign-course" asp-controller="Admin" asp-action="AssignCourse" asp-route-id="@teacherId">Assign Course</a>
+    </div>
+}

@@ -1,0 +1,36 @@
+﻿@model CoursesBySemesterViewModel
+
+<h2>Select Semester</h2>
+<link rel="stylesheet" href="~/css/Master.css" />
+<form asp-action="CoursesBySemester" method="post">
+    <div class="form-group">
+        <label asp-for="SelectedSemester">Semester</label>
+        <select asp-for="SelectedSemester" asp-items="Model.SemesterOptions" class="form-control">
+            <option value="">-- Choose Semester --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">View Courses</button>
+</form>
+
+@if (Model.Courses != null && Model.Courses.Any())
+{
+    <h3>Courses for @Model.SelectedSemester</h3>
+    <ul class="list-group">
+        @foreach (var course in Model.Courses)
+        {
+            <li class="list-group-item">
+                <a asp-controller="Admin" asp-action="CourseDetails" asp-route-id="@course.Id" class="btn btn-outline-primary btn-block">
+                    @course.Name
+                </a>
+            </li>
+        }
+    </ul>
+}
+else if (Model.SelectedSemester.HasValue)
+{
+    <p class="text-muted">No courses found for @Model.SelectedSemester.</p>
+}
+<a asp-controller="Admin" asp-action="CreateCourse" class="btn btn-success mt-3">
+    + Add New Course
+</a>

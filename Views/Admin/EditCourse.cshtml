@@ -1,0 +1,40 @@
+﻿@using Campus360.Data.Enum
+@model Course
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<h2>Edit Course</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="EditCourse" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreditHours"></label>
+        <select asp-for="CreditHours" class="form-control" asp-items="Html.GetEnumSelectList<CreditHours>()"></select>
+        <span asp-validation-for="CreditHours" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Semester"></label>
+        <select asp-for="Semester" class="form-control" asp-items="Html.GetEnumSelectList<Semester>()"></select>
+        <span asp-validation-for="Semester" class="text-danger"></span>
+    </div>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

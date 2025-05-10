@@ -1,0 +1,31 @@
+﻿@using Campus360.Models
+@model Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+<div asp-validation-summary="All" class="text-danger"></div>
+<link rel="stylesheet" href="~/css/Master.css" />
+
+<h2>Course Details</h2>
+
+<div class="card mt-4 p-4 shadow-sm" style="background-color: #ffffff; border: 1px solid #dce6f1; color: #003366;">
+    
+    <dl class="row">
+        <dt class="col-sm-3 font-weight-bold">Name:</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3 font-weight-bold">Credit Hours:</dt>
+        <dd class="col-sm-9">@Model.CreditHours.ToString()</dd>
+
+        <dt class="col-sm-3 font-weight-bold">Semester:</dt>
+        <dd class="col-sm-9">@Model.Semester.ToString()</dd>
+    </dl>
+
+    <a asp-action="CoursesBySemester" class="btn btn-primary mt-3">Back to Courses</a>
+
+    <div class="text-end mt-4">
+        <a asp-action="EditCourse" asp-route-id="@Model.Id" class="btn btn-primary me-2">Edit</a>
+        <a asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@using Campus360.ViewModels
+@model AssignCourseViewModel
+
+<h2>Assign Course</h2>
+<link rel="stylesheet" href="~/css/Master.css" />
+<form asp-action="AssignCourse" method="post">
+    <input type="hidden" asp-for="TeacherId" />
+
+    <div>
+        <label>Course</label>
+        <select asp-for="SelectedCourseId" asp-items="@(new SelectList(Model.Courses, "Id", "Name"))" class="form-control"></select>
+    </div>
+
+    <div>
+        <label>Class</label>
+        <select asp-for="SelectedClassId" asp-items="@(new SelectList(Model.Classes, "Id", "Id"))" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Assign</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}

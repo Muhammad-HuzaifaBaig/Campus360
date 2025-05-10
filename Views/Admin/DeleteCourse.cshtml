@@ -1,0 +1,20 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Delete Course";
+}
+
+<h2>Delete Course</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete the course <strong>@Model.Name</strong>?
+</div>
+
+<form asp-action="DeleteCourse" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="text-end">
+        <a asp-action="CoursesBySemester" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+</form>
