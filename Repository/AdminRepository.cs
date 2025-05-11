@@ -5,6 +5,7 @@ using Campus360.ViewModels;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Xml;
 
 namespace Campus360.Services
 {
@@ -180,7 +181,9 @@ namespace Campus360.Services
 
         public async Task CreateTimetableAsync(Timetable timetable)
         {
-            if (await HasTimetableConflictAsync(timetable))
+            var courseAssignment = await _context.CourseAssignments
+                .FirstOrDefaultAsync(ca => ca.Id == timetable.CourseAssignmentId);
+            if (await HasTimetableConflictAsync(courseAssignment.ClassId, timetable))
             {
                 throw new InvalidOperationException("Scheduling conflict detected");
             }
@@ -191,19 +194,25 @@ namespace Campus360.Services
 
         public async Task UpdateTimetableAsync(Timetable timetable)
         {
-            // Load the existing timetable with tracking
+
             var existing = await _context.Timetables
-                .Include(t => t.CourseAssignment)
                 .FirstOrDefaultAsync(t => t.Id == timetable.Id);
 
             if (existing == null)
                 throw new InvalidOperationException("Timetable not found");
 
-            //// Check for conflicts EXCLUDING the current timetable
-            //if (await HasTimetableConflictAsync(timetable))
-            //{
-            //    throw new InvalidOperationException("Scheduling conflict detected");
-            //}
+            // Get the classId using CourseAssignmentId
+            var courseAssignment = await _context.CourseAssignments
+                .FirstOrDefaultAsync(ca => ca.Id == timetable.CourseAssignmentId);
+
+            if (courseAssignment == null)
+                throw new InvalidOperationException("Invalid Course Assignment");
+
+            if (await HasTimetableConflictAsync(courseAssignment.ClassId, timetable))
+            {
+                throw new InvalidOperationException("Scheduling conflict detected");
+            }
+
             existing.CourseAssignmentId = timetable.CourseAssignmentId;
             existing.DayOfWeek = timetable.DayOfWeek;
             existing.StartTime = timetable.StartTime;
@@ -212,16 +221,18 @@ namespace Campus360.Services
             await _context.SaveChangesAsync();
         }
 
-        private async Task<bool> HasTimetableConflictAsync(Timetable timetable)
+        private async Task<bool> HasTimetableConflictAsync(int classId , Timetable timetable)
         {
-            
-            return  await _context.Timetables
-                .Where(t => t.CourseAssignment.ClassId == timetable.CourseAssignment.ClassId
-                         && t.DayOfWeek == timetable.DayOfWeek
-                         && t.Id != timetable.Id
-                         && t.StartTime == timetable.StartTime
-                         && t.EndTime == timetable.EndTime).AnyAsync();
+            return await _context.Timetables
+                .Where(t => t.CourseAssignment != null &&
+                            t.CourseAssignment.ClassId == classId &&
+                            t.DayOfWeek == timetable.DayOfWeek &&
+                            t.Id != timetable.Id &&
+                            t.StartTime == timetable.StartTime &&
+                            t.EndTime == timetable.EndTime)
+                .AnyAsync();
         }
+
 
         public async Task DeleteTimetableAsync(int id)
         {

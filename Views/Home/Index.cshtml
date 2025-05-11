@@ -1,8 +1,135 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Campus360 - Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <!-- Hero Section -->
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Welcome to Campus360</h1>
+            <p class="col-md-8 fs-4">Your comprehensive university management system</p>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Login">Login to your account</a>
+            }
+        </div>
+    </div>
+
+    <!-- Role-Specific Dashboard -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row align-items-md-stretch mb-4">
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 text-white bg-dark rounded-3">
+                        <h2>Administrator Dashboard</h2>
+                        <p>Manage courses, teachers, timetables, and system users.</p>
+                        <div class="d-grid gap-2 d-md-block">
+                            <a class="btn btn-outline-light me-2" asp-controller="Admin" asp-action="CoursesBySemester">Manage Courses</a>
+                            <a class="btn btn-outline-light" asp-controller="Admin" asp-action="AllTeachers">Manage Teachers</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                        <h2>Timetable Management</h2>
+                        <p>Create and manage all timetables across the university.</p>
+                        <div class="d-grid gap-2 d-md-block">
+                            <a class="btn btn-outline-secondary me-2" asp-controller="Admin" asp-action="AllTimetables">View All</a>
+                            <a class="btn btn-outline-secondary" asp-controller="Admin" asp-action="CreateTimetable">Create New</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (User.IsInRole("Teacher"))
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 text-white bg-primary rounded-3">
+                        <h2>Teacher Dashboard</h2>
+                        <p>View your teaching schedule and manage class attendance.</p>
+                        <div class="d-grid gap-2 d-md-block">
+                            <a class="btn btn-outline-light me-2" asp-controller="Teacher" asp-action="Timetable">My Timetable</a>
+                            <a class="btn btn-outline-light" asp-controller="Teacher" asp-action="AttendanceList">Attendance Records</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                        <h2>Quick Actions</h2>
+                        <p>Access frequently used features quickly.</p>
+                        <a class="btn btn-outline-secondary" href="#">Submit Grades</a>
+                    </div>
+                </div>
+            }
+            else if (User.IsInRole("Student"))
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 text-white bg-success rounded-3">
+                        <h2>Student Portal</h2>
+                        <p>Access your class schedule and attendance records.</p>
+                        <div class="d-grid gap-2 d-md-block">
+                            <a class="btn btn-outline-light me-2" asp-controller="Student" asp-action="Timetable">My Timetable</a>
+                            <a class="btn btn-outline-light" asp-controller="Student" asp-action="Attendance">My Attendance</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 bg-light border rounded-3">
+                        <h2>Academic Resources</h2>
+                        <p>View your courses and academic progress.(In Progress)</p>
+                        <a class="btn btn-outline-secondary" href="#">View Grades</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Quick Links (for unauthenticated users) -->
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">For Students</h5>
+                        <p class="card-text">Access your timetable, attendance records, and course materials.</p>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Student Login</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">For Teachers</h5>
+                        <p class="card-text">Manage your classes, take attendance, and submit grades.</p>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Teacher Login</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Administration</h5>
+                        <p class="card-text">System administration and management tools.</p>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Admin Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+        margin: -24px -12px 24px -12px;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    @@media (min-width: 768px) {
+        .hero-section {
+            margin: -24px -24px 24px -24px;
+        }
+    }
+</style>

@@ -1,0 +1,36 @@
+@using Campus360.ViewModels
+@model AttendanceViewModel
+
+@{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<h2>Mark Attendance</h2>
+
+<form asp-action="Attendance" method="post">
+    <input type="hidden" asp-for="CourseId" />
+    <input type="hidden" asp-for="Date" />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Present</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.AttendanceRecords)
+            {
+                <tr>
+                    <td>@student.Key</td>
+                    <td>
+                        <input type="checkbox" name="AttendanceRecords[@student.Key]" value="true" />
+                        <input type="hidden" name="AttendanceRecords[@student.Key]" value="false" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Submit Attendance</button>
+</form>

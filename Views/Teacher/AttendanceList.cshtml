@@ -1,0 +1,36 @@
+@model Dictionary<int, List<DateTime>>
+
+@{
+    ViewData["Title"] = "Attendance List";
+}
+
+<h2>Pending Attendance</h2>
+
+<div class="row">
+    @foreach (var courseEntry in Model)
+    {
+        var courseId = courseEntry.Key;
+        var dates = courseEntry.Value;
+
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Course ID: @courseId</h5>
+                    <p class="card-text">Pending Dates:</p>
+                    <ul class="list-unstyled">
+                        @foreach (var date in dates)
+                        {
+                            <li>
+                                <a asp-action="Attendance"
+                                   asp-route-courseId="@courseId"
+                                   asp-route-date="@date.ToString("yyyy-MM-dd")">
+                                   @date.ToString("dd MMM yyyy")
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>

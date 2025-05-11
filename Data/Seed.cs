@@ -11,6 +11,8 @@ namespace Campus360.Data
                                          RoleManager<IdentityRole> roleManager,
                                          AppDbContext context)
         {
+            
+
             // 1. Ensure database created and migrated
             await context.Database.MigrateAsync();
 
@@ -39,14 +41,14 @@ namespace Campus360.Data
             }
 
             // 4. Create Teachers
-            User teacher1 = null, teacher2 = null;
-            if (await userManager.FindByEmailAsync("john.doe@campus360.com") == null)
+            User teacher1 = null, teacher2 = null, teacher3 = null, teacher4 = null, teacher5 = null;
+            if (await userManager.FindByEmailAsync("Rohail.Qamar@campus360.com") == null)
             {
                 teacher1 = new User
                 {
-                    UserName = "john.doe@campus360.com",
-                    Email = "john.doe@campus360.com",
-                    FullName = "John Doe",
+                    UserName = "Rohail.Qamar@campus360.com",
+                    Email = "Rohail.Qamar@campus360.com",
+                    FullName = "Rohail Qamar",
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(teacher1, "Teacher@123");
@@ -55,13 +57,13 @@ namespace Campus360.Data
                 context.Teachers.Add(new Teacher { UserId = teacher1.Id });
             }
 
-            if (await userManager.FindByEmailAsync("jane.smith@campus360.com") == null)
+            if (await userManager.FindByEmailAsync("Umer.Farooq@campus360.com") == null)
             {
                 teacher2 = new User
                 {
-                    UserName = "jane.smith@campus360.com",
-                    Email = "jane.smith@campus360.com",
-                    FullName = "Jane Smith",
+                    UserName = "Umer.Farooq@campus360.com",
+                    Email = "Umer.Farooq@campus360.com",
+                    FullName = "Umer Farooq",
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(teacher2, "Teacher@123");
@@ -69,27 +71,73 @@ namespace Campus360.Data
 
                 context.Teachers.Add(new Teacher { UserId = teacher2.Id });
             }
+            if (await userManager.FindByEmailAsync("Asma.Ashraf@campus360.com") == null)
+            {
+                teacher3 = new User
+                {
+                    UserName = "Asma.Ashraf@campus360.com",
+                    Email = "Asma.Ashraf@campus360.com",
+                    FullName = "Asma Ashraf",
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(teacher3, "Teacher@123");
+                await userManager.AddToRoleAsync(teacher3, "Teacher");
 
+                context.Teachers.Add(new Teacher { UserId = teacher3.Id });
+            }
+            if (await userManager.FindByEmailAsync("Wajeeh.Uddin@campus360.com") == null)
+            {
+                teacher4 = new User
+                {
+                    UserName = "Syed.ZulfiqarUllahJafari@campus360.com",
+                    Email = "Syed.ZulfiqarUllahJafari@campus360.com",
+                    FullName = "Wajeeh Uddin",
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(teacher4, "Teacher@123");
+                await userManager.AddToRoleAsync(teacher4, "Teacher");
+
+                context.Teachers.Add(new Teacher { UserId = teacher4.Id });
+            }
+            if (await userManager.FindByEmailAsync("Syed.ZulfiqarUllahJafari@campus360.com") == null)
+            {
+                teacher5 = new User
+                {
+                    UserName = "Syed.ZulfiqarUllahJafari@campus360.com",
+                    Email = "Syed.ZulfiqarUllahJafari@campus360.com",
+                    FullName = "Syed Zulfiqar Ullah Jafari",
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(teacher5, "Teacher@123");
+                await userManager.AddToRoleAsync(teacher5, "Teacher");
+
+                context.Teachers.Add(new Teacher { UserId = teacher5.Id });
+            }
             // 5. Create Classes if none exist
             if (!context.Classes.Any())
             {
                 context.Classes.AddRange(
-                    new Class { Capacity = 30 },
-                    new Class { Capacity = 25 },
-                    new Class { Capacity = 35 }
+                    new Class { Capacity = 51 },
+                    new Class { Capacity = 52 },
+                    new Class { Capacity = 53 },
+                    new Class { Capacity = 54 },
+                    new Class { Capacity = 55 },
+                    new Class { Capacity = 49 },
+                    new Class { Capacity = 48 },
+                    new Class { Capacity = 49 }
                 );
                 await context.SaveChangesAsync();
             }
 
             // 6. Create Students
-            User student1 = null, student2 = null;
-            if (await userManager.FindByEmailAsync("alice.johnson@campus360.com") == null)
+            User student1 = null, student2 = null, student3 = null, student4 = null, student5 = null;
+            if (await userManager.FindByEmailAsync("Uzaim.Naseem@campus360.com") == null)
             {
                 student1 = new User
                 {
-                    UserName = "alice.johnson@campus360.com",
-                    Email = "alice.johnson@campus360.com",
-                    FullName = "Alice Johnson",
+                    UserName = "Uzaim.Naseem@campus360.com",
+                    Email = "Uzaim.Naseem@campus360.com",
+                    FullName = "Uzaim Naseem",
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(student1, "Student@123");
@@ -98,18 +146,18 @@ namespace Campus360.Data
                 context.Students.Add(new Student
                 {
                     UserId = student1.Id,
-                    ClassId = 1,
-                    Semester = Semester.First
+                    ClassId = 4,
+                    Semester = Semester.Fourth
                 });
             }
 
-            if (await userManager.FindByEmailAsync("bob.williams@campus360.com") == null)
+            if (await userManager.FindByEmailAsync("Hammad.Khan@campus360.com") == null)
             {
                 student2 = new User
                 {
-                    UserName = "bob.williams@campus360.com",
-                    Email = "bob.williams@campus360.com",
-                    FullName = "Bob Williams",
+                    UserName = "Hammad.Khan@campus360.com",
+                    Email = "Hammad.Khan@campus360.com",
+                    FullName = "Hammad Khan",
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(student2, "Student@123");
@@ -118,12 +166,69 @@ namespace Campus360.Data
                 context.Students.Add(new Student
                 {
                     UserId = student2.Id,
-                    ClassId = 1,
-                    Semester = Semester.First
+                    ClassId = 4,
+                    Semester = Semester.Fourth
+                });
+            }
+            if (await userManager.FindByEmailAsync("Ahmed.Hasan@campus360.com") == null)
+            {
+                student3 = new User
+                {
+                    UserName = "Ahmed.Hasan@campus360.com",
+                    Email = "Ahmed.Hasan@campus360.com",
+                    FullName = "Ahmed.Hasan",
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(student3, "Student@123");
+                await userManager.AddToRoleAsync(student3, "Student");
+
+                context.Students.Add(new Student
+                {
+                    UserId = student3.Id,
+                    ClassId = 4,
+                    Semester = Semester.Fourth
+                });
+            }
+            if (await userManager.FindByEmailAsync("Hamza.Baig@campus360.com") == null)
+            {
+                student4 = new User
+                {
+                    UserName = "Hamza.Baig@campus360.com",
+                    Email = "Hamza.Baig@campus360.com",
+                    FullName = "Hamza Baig",
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(student4, "Student@123");
+                await userManager.AddToRoleAsync(student4, "Student");
+
+                context.Students.Add(new Student
+                {
+                    UserId = student4.Id,
+                    ClassId = 4,
+                    Semester = Semester.Fourth
+                });
+            }
+            if (await userManager.FindByEmailAsync("Raahim.Rizwan@campus360.com") == null)
+            {
+                student5 = new User
+                {
+                    UserName = "Raahim.Rizwan@campus360.com",
+                    Email = "Raahim.Rizwan@campus360.com",
+                    FullName = "Raahim Rizwan",
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(student5, "Student@123");
+                await userManager.AddToRoleAsync(student5, "Student");
+
+                context.Students.Add(new Student
+                {
+                    UserId = student5.Id,
+                    ClassId = 4,
+                    Semester = Semester.Fourth
                 });
             }
 
-            // 7. Create Courses if none exist
+            //7.Create Courses if none exist
             if (!context.Courses.Any())
             {
                 context.Courses.AddRange(
@@ -135,7 +240,7 @@ namespace Campus360.Data
                 await context.SaveChangesAsync();
             }
 
-            // 8. Create Course Assignments if none exist
+           // 8.Create Course Assignments if none exist
             if (!context.CourseAssignments.Any())
             {
                 context.CourseAssignments.AddRange(

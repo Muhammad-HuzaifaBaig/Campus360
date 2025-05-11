@@ -1,0 +1,152 @@
+@using Campus360.ViewModels
+@model IEnumerable<TimetableVM>
+
+@{
+    ViewData["Title"] = "Timetable";
+}
+
+<div class="container py-5">
+    <h1 class="text-center mb-4">Class Timetable</h1>
+
+    <!-- Timetable Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered timetable-table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    // Create time slots from 8:00 to 18:00 (10 hours)
+                    for (int hour = 8; hour < 18; hour++)
+                    {
+                        <tr>
+                            <td class="time-slot">@hour:00 - @(hour + 1):00</td>
+                            
+                            @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" })
+                            {
+                                <td>
+                                    @{
+                                        var coursesInSlot = Model.Where(c => 
+                                            c.Day == day && 
+                                            c.StartTime.Hours <= hour && 
+                                            c.EndTime.Hours > hour);
+                                        
+                                        foreach (var course in coursesInSlot)
+                                        {
+                                            <div class="course-card @GetCourseClass(course.CourseName)">
+                                                <strong>@course.CourseName</strong><br>
+                                                @FormatTimeSpan(course.StartTime) - @FormatTimeSpan(course.EndTime)
+                                            </div>
+                                        }
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Course Summary -->
+    <div class="row mt-5">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Course Schedule Summary</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var course in Model.GroupBy(c => c.CourseName))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                @course.Key
+                                <div>
+                                    @foreach (var session in course)
+                                    {
+                                        <span class="badge @GetCourseBadgeClass(course.Key) me-1">
+                                            @session.Day @FormatTimeSpan(session.StartTime)-@FormatTimeSpan(session.EndTime)
+                                        </span>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetCourseClass(string courseName)
+    {
+        return courseName switch
+        {
+            "Mathematics" => "math-course",
+            "Computer Science" => "cs-course",
+            _ => "default-course"
+        };
+    }
+
+    string GetCourseBadgeClass(string courseName)
+    {
+        return courseName switch
+        {
+            "Mathematics" => "bg-danger",
+            "Computer Science" => "bg-warning text-dark",
+            _ => "bg-secondary"
+        };
+    }
+
+    string FormatTimeSpan(TimeSpan time)
+    {
+        return time.ToString(@"hh\:mm");
+    }
+}
+
+<style>
+    .timetable-table {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .time-slot {
+        background-color: #e9ecef;
+        font-weight: bold;
+        width: 120px;
+    }
+    
+    .course-card {
+        border-left: 4px solid #0d6efd;
+        border-radius: 5px;
+        padding: 8px;
+        margin: 2px 0;
+        background-color: white;
+        font-size: 0.9rem;
+    }
+    
+    .math-course {
+        border-left-color: #dc3545;
+    }
+    
+    .cs-course {
+        border-left-color: #fd7e14;
+    }
+    
+    .default-course {
+        border-left-color: #6c757d;
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+    }
+</style>

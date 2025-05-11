@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Campus360.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250426172021_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250511155720_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
